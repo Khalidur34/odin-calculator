@@ -3,6 +3,7 @@ const clearButton = document.querySelector(".clear");
 const numButtons = document.querySelectorAll(".number");
 const operatorButtons = document.querySelectorAll(".operator");
 const equalButton = document.querySelector(".equal");
+const decimalButton = document.querySelector(".decimal");
 
 let number = 0;
 let operator = "";
@@ -16,9 +17,24 @@ numButtons.forEach(function(button) {
 
 operatorButtons.forEach(function(button) {
     button.addEventListener('click', function() {
-        number = parseInt(displayNum.textContent);
-        operator = button.textContent;
-        displayNum.textContent = '';
+        if(operator != "") {
+            let result = operation(number, parseInt(displayNum.textContent), operator);
+            number = result;
+            operator = '';
+            update(result);
+        }
+        else {
+            tempNum = parseInt(displayNum.textContent);
+            if(isNaN(tempNum)) {
+                number = 0;
+            }
+            else {
+                number = tempNum;
+            }
+            console.log(number);
+            operator = button.textContent;
+            displayNum.textContent = '';
+        }
     })
 })
 
@@ -29,8 +45,8 @@ clearButton.addEventListener('click', function() {
 
 equalButton.addEventListener('click', function() {
     if(operator === '') update(number);
-    if(displayNum.textContent != '' || displayNum.textContent != null) {
-        console.log(number + " " + parseInt(displayNum.textContent) + " " + operator);    
+    else if(displayNum.textContent != '' || displayNum.textContent != null) {    
+        console.log(number + " " + parseInt(displayNum.textContent) + " " + operator)
         let result = operation(number, parseInt(displayNum.textContent), operator);
         number = result;
         operator = '';
@@ -75,6 +91,5 @@ function clear() {
 }
 
 function update(displayNumber) {
-    console.log(displayNumber);
     displayNum.textContent = displayNumber;
 }
