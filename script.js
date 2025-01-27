@@ -4,6 +4,7 @@ const numButtons = document.querySelectorAll(".number");
 const operatorButtons = document.querySelectorAll(".operator");
 const equalButton = document.querySelector(".equal");
 const decimalButton = document.querySelector(".decimal");
+const backButton = document.querySelector(".backspace");
 
 let number = 0;
 let operator = "";
@@ -14,17 +15,25 @@ numButtons.forEach(function(button) {
     })
 });
 
+decimalButton.addEventListener('click', function(){
+    update(displayNum.textContent + decimalButton.textContent);
+});
+
+backButton.addEventListener('click', function(){
+    update(displayNum.textContent.substring(0, displayNum.textContent.length - 1));
+})
+
 
 operatorButtons.forEach(function(button) {
     button.addEventListener('click', function() {
         if(operator != "") {
-            let result = operation(number, parseInt(displayNum.textContent), operator);
+            let result = operation(number, parseFloat(displayNum.textContent), operator);
             number = result;
             operator = '';
             update(result);
         }
         else {
-            tempNum = parseInt(displayNum.textContent);
+            tempNum = parseFloat(displayNum.textContent);
             if(isNaN(tempNum)) {
                 number = 0;
             }
@@ -46,8 +55,8 @@ clearButton.addEventListener('click', function() {
 equalButton.addEventListener('click', function() {
     if(operator === '') update(number);
     else if(displayNum.textContent != '' || displayNum.textContent != null) {    
-        console.log(number + " " + parseInt(displayNum.textContent) + " " + operator)
-        let result = operation(number, parseInt(displayNum.textContent), operator);
+        console.log(number + " " + parseFloat(displayNum.textContent) + " " + operator)
+        let result = operation(number, parseFloat(displayNum.textContent), operator);
         number = result;
         operator = '';
         update(result);
